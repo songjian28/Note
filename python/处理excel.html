@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="tool" content="leanote-desktop-app">
+<title>处理excel</title>
+<style>
+
+*{font-family:"lucida grande","lucida sans unicode",lucida,helvetica,"Hiragino Sans GB","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;}
+
+body {
+  margin: 0;
+}
+
+/*公用文字样式*/
+h1{font-size:30px}h2{font-size:24px}h3{font-size:18px}h4{font-size:14px}
+.note-container{
+    width:850px; 
+    margin:auto;
+    padding: 10px 20px;
+    box-shadow: 1px 1px 10px #eee;
+}
+#title {
+  margin: 0;
+}
+table {
+    margin-bottom: 16px;
+    border-collapse: collapse;
+}
+table th, table td {
+    padding: 6px 13px;
+    border: 1px solid #ddd;
+}
+table th {
+    font-weight: bold;
+}
+
+table tr {
+    background-color: none;
+    border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+    background-color: rgb(247, 247, 249);
+}
+.mce-item-table, .mce-item-table td, .mce-item-table th, .mce-item-table caption {
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+  padding: 6px 13px;
+}
+blockquote {
+  border-left-width:10px;
+  background-color:rgba(128,128,128,0.05);
+  border-top-right-radius:5px;
+  border-bottom-right-radius:5px;
+  padding:15px 20px;
+  border-left:5px solid rgba(128,128,128,0.075);
+}
+blockquote p {
+  margin-bottom:1.1em;
+  font-size:1em;
+  line-height:1.45
+}
+blockquote ul:last-child,blockquote ol:last-child {
+  margin-bottom:0
+}
+pre {
+  padding: 18px;
+  background-color: #f7f7f9;
+  border: 1px solid #e1e1e8;
+  border-radius: 3px;
+  display: block;
+}
+code {
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #c7254e;
+  white-space: nowrap;
+  background-color: #f9f2f4;
+  border-radius: 4px;
+}
+.footnote {
+  vertical-align: top;
+  position: relative;
+  top: -0.5em;
+  font-size: .8em;
+}
+
+hr {
+  margin:2em 0
+}
+img {
+  max-width:100%
+}
+pre {
+  word-break:break-word
+}
+p,pre,pre.prettyprint,blockquote {
+  margin:0 0 1.1em
+}
+hr {
+  margin:2em 0
+}
+img {
+  max-width:100%
+}
+.sequence-diagram,.flow-chart {
+  text-align:center;
+  margin-bottom:1.1em
+}
+.sequence-diagram text,.flow-chart text {
+  font-size:15px !important;
+  font-family:"Source Sans Pro",sans-serif !important
+}
+.sequence-diagram [fill="#ffffff"],.flow-chart [fill="#ffffff"] {
+  fill:#f6f6f6
+}
+.sequence-diagram [stroke="#000000"],.flow-chart [stroke="#000000"] {
+  stroke:#3f3f3f
+}
+.sequence-diagram text[stroke="#000000"],.flow-chart text[stroke="#000000"] {
+  stroke:none
+}
+.sequence-diagram [fill="#000"],.flow-chart [fill="#000"],.sequence-diagram [fill="#000000"],.flow-chart [fill="#000000"],.sequence-diagram [fill="black"],.flow-chart [fill="black"] {
+  fill:#3f3f3f
+}
+ul,ol {
+  margin-bottom:1.1em
+}
+ul ul,ol ul,ul ol,ol ol {
+  margin-bottom:1.1em
+}
+kbd {
+  padding:.1em .6em;
+  border:1px solid rgba(63,63,63,0.25);
+  -webkit-box-shadow:0 1px 0 rgba(63,63,63,0.25);
+  box-shadow:0 1px 0 rgba(63,63,63,0.25);
+  font-size:.7em;
+  font-family:sans-serif;
+  background-color:#fff;
+  color:#333;
+  border-radius:3px;
+  display:inline-block;
+  margin:0 .1em;
+  white-space:nowrap
+}
+.toc ul {
+  list-style-type:none;
+  margin-bottom:15px
+}
+</style>
+<!-- 该css供自定义样式 -->
+<link href="../leanote-html.css" rel="stylesheet">
+</head>
+
+<body>
+
+	<div class="note-container">
+		<h1 class="title" id="leanote-title">处理excel</h1>
+		<div class="content-html" id="leanote-content"><pre id="leanote_ace_1594459565029_0" class="brush:python ace-tomorrow">#&nbsp;-*-coding:GBK-*-
+#!C:\Python27\python.exe
+'''
+Created&nbsp;on&nbsp;2012-12-14
+
+@author:&nbsp;duanzuocai
+@note:&nbsp;Excel&nbsp;工具
+'''
+from&nbsp;openpyxl.cell&nbsp;import&nbsp;get_column_letter
+from&nbsp;openpyxl.reader.excel&nbsp;import&nbsp;load_workbook
+from&nbsp;openpyxl.workbook&nbsp;import&nbsp;Workbook
+from&nbsp;openpyxl.writer.excel&nbsp;import&nbsp;ExcelWriter
+import&nbsp;xlrd
+import&nbsp;xlwt
+
+class&nbsp;Excel2003:
+&nbsp;&nbsp;&nbsp;&nbsp;'''&nbsp;要安装xlrd模块&nbsp;'''
+&nbsp;&nbsp;&nbsp;&nbsp;sheet&nbsp;=&nbsp;workBook&nbsp;=&nbsp;None;
+&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;=&nbsp;0;&nbsp;Y&nbsp;=&nbsp;0;&nbsp;xIndex&nbsp;=&nbsp;0;&nbsp;yIndex&nbsp;=&nbsp;0;
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;__init__(self,&nbsp;path,&nbsp;sheet=0):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wb&nbsp;=&nbsp;xlrd.open_workbook(path)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sh&nbsp;=&nbsp;wb.sheet_by_index(sheet)&nbsp;&nbsp;#&nbsp;sheet&nbsp;=&nbsp;wb.sheet_by_name(u'Sheet1')&nbsp;得到excel.Sheet
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.sheet&nbsp;=&nbsp;sh
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.workBook&nbsp;=&nbsp;wb
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.Y&nbsp;=&nbsp;self.sheet.nrows
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.X&nbsp;=&nbsp;self.sheet.ncols
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;readLineX(self,&nbsp;num):&nbsp;&nbsp;#&nbsp;读一列
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;num&nbsp;&gt;&nbsp;self.X:&nbsp;return&nbsp;None
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;self.sheet.col_values(num)
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;readLineY(self,&nbsp;num):&nbsp;&nbsp;#&nbsp;读一排
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;num&nbsp;&gt;&nbsp;self.Y:&nbsp;return&nbsp;None
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;self.sheet.row_values(num)
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;read(self,&nbsp;x,&nbsp;y):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;通过索引读取数据：&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;self.sheet.cell(x,&nbsp;y).value
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;nextY(self):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;self.yIndex&nbsp;&gt;=&nbsp;self.Y:&nbsp;return&nbsp;None;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs&nbsp;=&nbsp;self.readLineY(self.yIndex)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.yIndex&nbsp;+=&nbsp;1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;vs;
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;nextX(self):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;self.xIndex&nbsp;&gt;=&nbsp;self.X:&nbsp;return&nbsp;None;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs&nbsp;=&nbsp;self.readLineX(self.xIndex)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.xIndex&nbsp;+=&nbsp;1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;vs;
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;resetX(self):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.xIndex&nbsp;=&nbsp;0;
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;resetY(self):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.yIndex&nbsp;=&nbsp;0;
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;hasNextX(self):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;self.X&nbsp;&gt;&nbsp;self.xIndex
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;hasNextY(self):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;self.Y&nbsp;&gt;&nbsp;self.yIndex
+
+class&nbsp;Excel2003Create():
+&nbsp;&nbsp;&nbsp;&nbsp;'''&nbsp;需要xlwt模块&nbsp;'''
+&nbsp;&nbsp;&nbsp;&nbsp;path&nbsp;=&nbsp;workBook&nbsp;=&nbsp;sheet&nbsp;=&nbsp;None;
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;__init__(self,&nbsp;path):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.path&nbsp;=&nbsp;path
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.workBook&nbsp;=&nbsp;xlwt.Workbook()
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;createSheet(self,&nbsp;sName):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;self.workBook.add_sheet(sName)
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;set(self,&nbsp;sheet_obj,&nbsp;x,&nbsp;y,&nbsp;value):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sheet_obj.write(x,&nbsp;y,&nbsp;value)
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;save(self):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.workBook.save(self.path)
+
+class&nbsp;Excel2007(Excel2003):
+&nbsp;&nbsp;&nbsp;&nbsp;'''&nbsp;要安装openpyxl模块&nbsp;'''
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;__init__(self,&nbsp;path,&nbsp;sheetNum):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wb&nbsp;=&nbsp;load_workbook(filename=path)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;sheetNum&nbsp;&gt;&nbsp;len(wb.get_sheet_names()):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;'Error:&nbsp;out&nbsp;of&nbsp;index&nbsp;the&nbsp;sheetNumber',&nbsp;len(wb.get_sheet_names());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sheetName&nbsp;=&nbsp;wb.get_sheet_names()[sheetNum]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.sheet&nbsp;=&nbsp;wb.get_sheet_by_name(name=sheetName)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.Y&nbsp;=&nbsp;self.sheet.get_highest_row()
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.X&nbsp;=&nbsp;self.sheet.get_highest_column()
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;read(self,&nbsp;x,&nbsp;y):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;self.sheet.cell(row=y,&nbsp;column=x).value
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;readLineX(self,&nbsp;num):&nbsp;&nbsp;#&nbsp;读一列
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;num&nbsp;&gt;&nbsp;self.X:&nbsp;return&nbsp;None
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs&nbsp;=&nbsp;[]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;i&nbsp;in&nbsp;range(self.Y):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs.insert(i,&nbsp;self.read(num,&nbsp;i))
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;xs
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;readLineY(self,&nbsp;num):&nbsp;&nbsp;#&nbsp;读一排
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;num&nbsp;&gt;&nbsp;self.Y:&nbsp;return&nbsp;None
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ys&nbsp;=&nbsp;[]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;i&nbsp;in&nbsp;range(self.X):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ys.insert(i,&nbsp;self.read(i,&nbsp;num))
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ys
+
+class&nbsp;Excel2007Write():
+&nbsp;&nbsp;&nbsp;&nbsp;excelWriter&nbsp;=&nbsp;path&nbsp;=&nbsp;workBook&nbsp;=&nbsp;sheet&nbsp;=&nbsp;None;
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;__init__(self,&nbsp;path):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.path&nbsp;=&nbsp;path
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.workBook&nbsp;=&nbsp;Workbook()
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.excelWriter&nbsp;=&nbsp;ExcelWriter(workbook=self.workBook)
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;createSheet(self,&nbsp;index,&nbsp;name):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sheet&nbsp;=&nbsp;self.workBook.worksheets[index]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sheet.title&nbsp;=&nbsp;name
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;sheet
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;set(self,&nbsp;sheet_obj,&nbsp;x,&nbsp;y,&nbsp;value):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;col&nbsp;=&nbsp;get_column_letter(x+1)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sheet_obj.cell('%s%s'&nbsp;%&nbsp;(col,&nbsp;y+1)).value&nbsp;=&nbsp;value
+
+&nbsp;&nbsp;&nbsp;&nbsp;def&nbsp;save(self):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.excelWriter.save(filename=path)
+
+if&nbsp;__name__&nbsp;==&nbsp;'__main__':
+&nbsp;&nbsp;&nbsp;&nbsp;path&nbsp;=&nbsp;'C:\\Users\\duanzuocai.DS\\Desktop\\ab.xlsx';
+
+&nbsp;&nbsp;&nbsp;&nbsp;excel&nbsp;=&nbsp;Excel2007Write(path)
+&nbsp;&nbsp;&nbsp;&nbsp;s1&nbsp;=&nbsp;excel.createSheet(0,&nbsp;"doc1")
+&nbsp;&nbsp;&nbsp;&nbsp;excel.set(s1,&nbsp;0,&nbsp;0,&nbsp;'00')
+&nbsp;&nbsp;&nbsp;&nbsp;excel.set(s1,&nbsp;0,&nbsp;1,&nbsp;'01')
+&nbsp;&nbsp;&nbsp;&nbsp;excel.set(s1,&nbsp;0,&nbsp;2,&nbsp;'02')
+&nbsp;&nbsp;&nbsp;&nbsp;excel.set(s1,&nbsp;1,&nbsp;0,&nbsp;'10')
+&nbsp;&nbsp;&nbsp;&nbsp;excel.set(s1,&nbsp;1,&nbsp;1,&nbsp;'11')
+&nbsp;&nbsp;&nbsp;&nbsp;excel.save()
+
+
+
+</pre><p>&nbsp;<br></p></div>
+	</div>
+
+<!-- 该js供其它处理 -->
+<script src="../leanote-html.js"></script>
+</body>
+</html>
