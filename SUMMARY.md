@@ -1,6 +1,6 @@
 # Table of contents
 
-* [我的文件](README.md)
+* [学习](README.md)
   * [python](readme/python/README.md)
     * [anaconda命令](readme/python/anaconda-ming-ling.md)
     * [Django-migrate-fake-与-fake-initial](readme/python/djangomigratefake-yu-fakeinitial.md)
